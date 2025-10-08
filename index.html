@@ -6,7 +6,6 @@
   <title>FLUS Advanced Prototype</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-    /* Global Styles */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -74,7 +73,6 @@
       color: #555;
     }
 
-    /* Button Styles */
     .btn {
       background: linear-gradient(135deg, #e9de36, #d2bc00);
       color: white;
@@ -131,7 +129,6 @@
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
 
-    /* Job Cards */
     .job-list {
       display: flex;
       flex-direction: column;
@@ -211,7 +208,6 @@
       gap: 0.75rem;
     }
 
-    /* Responsive Buttons in Card */
     .job-pay button {
       font-size: 0.95rem;
       padding: 0.7rem 1.5rem;
@@ -230,13 +226,11 @@
       box-shadow: 0 8px 24px rgba(25, 118, 210, 0.4);
     }
 
-    /* Onboarding special styling */
     #onboarding {
       background: linear-gradient(135deg, rgba(67, 160, 71, 0.08), rgba(102, 187, 106, 0.05));
       border: 2px solid rgba(67, 160, 71, 0.2);
     }
 
-    /* Mobile adjustments */
     @media (max-width: 600px) {
       header {
         font-size: 1.5rem;
@@ -343,9 +337,18 @@
     <button class="btn" style="margin-top:1rem;">Filtrer / Søk 🔍</button>
   </section>
 
+  <section id="profile" style="display:none;">
+    <h2>Profil 👤</h2>
+    <p>Her kan du se og endre informasjonen din.</p>
+    <ul style="margin-bottom:1.5rem;">
+      <li><strong>Navn:</strong> Ola Nordmann</li>
+      <li><strong>Alder:</strong> 17 år</li>
+      <li><strong>E-post:</strong> ola.nordmann@email.no</li>
+    </ul>
+    <button class="btn btn-secondary">Rediger profil</button>
+  </section>
 </main>
 
-<!-- Bunnmeny med ikoner -->
 <nav class="bottom-nav">
   <button class="nav-btn" onclick="showTab('jobs')" title="Småjobber">
     <span aria-hidden="true">🏠</span>
@@ -412,16 +415,16 @@
 </style>
 
 <script>
-  // Bytt mellom sidene når du trykker på ikonene i menyen nederst
   function showTab(tab) {
-    // Skjul alle seksjoner (bortsett fra header og meny)
     document.querySelectorAll('main > section').forEach(sec => sec.style.display = 'none');
-    // Vis riktig seksjon ut fra hva du trykker på
     if(tab === 'jobs') {
       document.getElementById('jobs').style.display = '';
       document.getElementById('onboarding').style.display = '';
+      let prof = document.getElementById('profile');
+      if(prof) prof.style.display = 'none';
+      let msg = document.getElementById('messages');
+      if(msg) msg.style.display = 'none';
     } else if(tab === 'messages') {
-      // Lag meldingsseksjon hvis den ikke finnes fra før
       let msg = document.getElementById('messages');
       if(!msg) {
         msg = document.createElement('section');
@@ -435,15 +438,8 @@
       let prof = document.getElementById('profile');
       if(prof) prof.style.display = 'none';
     } else if(tab === 'profile') {
-      // Lag profilseksjon hvis den ikke finnes fra før
       let prof = document.getElementById('profile');
-      if(!prof) {
-        prof = document.createElement('section');
-        prof.id = 'profile';
-        prof.innerHTML = `<h2>Profil 👤</h2><p>Her kan du se og endre informasjonen din.</p>`;
-        document.querySelector('main').appendChild(prof);
-      }
-      prof.style.display = '';
+      if(prof) prof.style.display = '';
       document.getElementById('onboarding').style.display = 'none';
       document.getElementById('jobs').style.display = 'none';
       let msg = document.getElementById('messages');
