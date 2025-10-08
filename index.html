@@ -426,6 +426,13 @@
 </style>
 
 <script>
+  // Vis popup om å bytte til mobilvisning i nettleseren
+  window.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      alert('Tips: For best opplevelse, bytt til mobilvisning i nettleserens utviklerverktøy (f.eks. trykk F12 og velg "Toggle device toolbar" eller mobil-ikonet).');
+    }, 600);
+  });
+
   function showTab(tab) {
     document.querySelectorAll('main > section').forEach(sec => sec.style.display = 'none');
     if(tab === 'jobs') {
