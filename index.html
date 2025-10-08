@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FLUS Advanced Prototype</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 50%, #e3f2fd 100%);
+      min-height: 100vh;
+      color: #1a1a1a;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: linear-gradient(135deg, #ffff6c, #e9de36, #d2bc00);
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      box-shadow: 0 8px 32px rgba(46, 125, 50, 0.3);
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      letter-spacing: 0.5px;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    section {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    section:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 48px rgba(0,0,0,0.12);
+    }
+
+    h2 {
+      margin-bottom: 1.5rem;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #e9de36;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    p {
+      font-size: 1.05rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+      color: #555;
+    }
+
+    /* Button Styles */
+    .btn {
+      background: linear-gradient(135deg, #e9de36, #d2bc00);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-right: 0.75rem;
+      margin-bottom: 0.75rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 16px rgba(67, 160, 71, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 8px 24px rgba(67, 160, 71, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(-1px) scale(0.98);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+      color: #333;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-secondary:hover {
+      background: linear-gradient(135deg, #e8e8e8, #dadada);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Job Cards */
+    .job-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .job {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #ffffff, #f8fdf9);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .job::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, #43A047, #66BB6A);
+      transition: width 0.3s ease;
+    }
+
+    .job:hover {
+      transform: translateX(4px) translateY(-2px);
+      box-shadow: 0 8px 28px rgba(67, 160, 71, 0.15);
+      border-color: rgba(67, 160, 71, 0.2);
+    }
+
+    .job:hover::before {
+      width: 6px;
+    }
+
+    .job-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .job-title {
+      font-weight: 700;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #1a1a1a;
+    }
+
+    .job-distance {
+      font-size: 0.9rem;
+      color: #888;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .job-distance::before {
+      content: '📍';
+      font-size: 0.85rem;
+    }
+
+    .job-pay {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #2E7D32;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.75rem;
+    }
+
+    /* Responsive Buttons in Card */
+    .job-pay button {
+      font-size: 0.95rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: 25px;
+      margin: 0;
+    }
+
+    .filter-btn {
+      width: 100%;
+      margin-top: 1rem;
+      background: linear-gradient(135deg, #1976D2, #42A5F5);
+      box-shadow: 0 4px 16px rgba(25, 118, 210, 0.3);
+    }
+
+    .filter-btn:hover {
+      box-shadow: 0 8px 24px rgba(25, 118, 210, 0.4);
+    }
+
+    /* Onboarding special styling */
+    #onboarding {
+      background: linear-gradient(135deg, rgba(67, 160, 71, 0.08), rgba(102, 187, 106, 0.05));
+      border: 2px solid rgba(67, 160, 71, 0.2);
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+      header {
+        font-size: 1.5rem;
+        padding: 1.2rem;
+      }
+
+      main {
+        padding: 1.5rem 1rem;
+      }
+
+      section {
+        padding: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .job {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .job-pay {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+      }
+
+      .job-pay button {
+        margin: 0;
+      }
+
+      .btn {
+        width: 100%;
+        margin-right: 0;
+      }
+
+      .bottom-nav {
+        font-size: 1.2rem;
+        padding: 0.2rem 0;
+      }
+
+      .nav-btn {
+        font-size: 1.2rem;
+        padding: 0.2rem 0.5rem;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<header>
+  FLUS App
+</header>
+
+<main>
+  <!-- Onboarding -->
+  <section id="onboarding">
+    <h2>Velkommen til FLUS! 🎉</h2>
+    <p>Finn småjobber i nærheten og start din første arbeidsopplevelse i dag. Bygg erfaring og tjen penger enkelt!</p>
+    <button class="btn">Opprett konto</button>
+    <button class="btn btn-secondary">Logg inn</button>
+  </section>
+
+  <!-- Småjobber -->
+  <section id="jobs">
+    <h2>Småjobber i nærheten 🏠</h2>
+    <div class="job-list">
+      <div class="job">
+        <div class="job-info">
+          <span class="job-title">👶 Barnevakt</span>
+          <span class="job-distance">2 km unna</span>
+        </div>
+        <div class="job-pay">
+          150 kr
+          <button class="btn btn-secondary">Søk</button>
+        </div>
+      </div>
+      <div class="job">
+        <div class="job-info">
+          <span class="job-title">🐕 Hundelufting</span>
+          <span class="job-distance">1 km unna</span>
+        </div>
+        <div class="job-pay">
+          100 kr
+          <button class="btn btn-secondary">Søk</button>
+        </div>
+      </div>
+      <div class="job">
+        <div class="job-info">
+          <span class="job-title">🌿 Hagearbeid</span>
+          <span class="job-distance">3 km unna</span>
+        </div>
+        <div class="job-pay">
+          200 kr
+          <button class="btn btn-secondary">Søk</button>
+        </div>
+      </div>
+    </div>
+    <button class="btn" style="margin-top:1rem;">Filtrer / Søk 🔍</button>
+  </section>
+
+</main>
+
+<!-- Bunnmeny med ikoner -->
+<nav class="bottom-nav">
+  <button class="nav-btn" onclick="showTab('jobs')" title="Småjobber">
+    <span aria-hidden="true">🏠</span>
+    <small>Jobber</small>
+  </button>
+  <button class="nav-btn" onclick="showTab('messages')" title="Meldinger">
+    <span aria-hidden="true">💬</span>
+    <small>Meldinger</small>
+  </button>
+  <button class="nav-btn" onclick="showTab('profile')" title="Profil">
+    <span aria-hidden="true">👤</span>
+    <small>Profil</small>
+  </button>
+</nav>
+
+<style>
+  .bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #ffff6c, #e9de36, #d2bc00);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 0;
+    box-shadow: 0 -4px 24px rgba(67, 160, 71, 0.12);
+    z-index: 200;
+  }
+  .nav-btn {
+    background: none;
+    border: none;
+    color: #333;
+    font: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.2rem 1.2rem;
+    transition: color 0.2s;
+  }
+  .nav-btn:focus,
+  .nav-btn:hover {
+    color: #2E7D32;
+    outline: none;
+  }
+  .nav-btn small {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  @media (max-width: 600px) {
+    .bottom-nav {
+      font-size: 1.2rem;
+      padding: 0.2rem 0;
+    }
+    .nav-btn {
+      font-size: 1.2rem;
+      padding: 0.2rem 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  // Bytt mellom sidene når du trykker på ikonene i menyen nederst
+  function showTab(tab) {
+    // Skjul alle seksjoner (bortsett fra header og meny)
+    document.querySelectorAll('main > section').forEach(sec => sec.style.display = 'none');
+    // Vis riktig seksjon ut fra hva du trykker på
+    if(tab === 'jobs') {
+      document.getElementById('jobs').style.display = '';
+      document.getElementById('onboarding').style.display = '';
+    } else if(tab === 'messages') {
+      // Lag meldingsseksjon hvis den ikke finnes fra før
+      let msg = document.getElementById('messages');
+      if(!msg) {
+        msg = document.createElement('section');
+        msg.id = 'messages';
+        msg.innerHTML = `<h2>Meldinger 💬</h2><p>Her ser du meldinger fra arbeidsgivere og andre brukere.</p>`;
+        document.querySelector('main').appendChild(msg);
+      }
+      msg.style.display = '';
+      document.getElementById('onboarding').style.display = 'none';
+      document.getElementById('jobs').style.display = 'none';
+      let prof = document.getElementById('profile');
+      if(prof) prof.style.display = 'none';
+    } else if(tab === 'profile') {
+      // Lag profilseksjon hvis den ikke finnes fra før
+      let prof = document.getElementById('profile');
+      if(!prof) {
+        prof = document.createElement('section');
+        prof.id = 'profile';
+        prof.innerHTML = `<h2>Profil 👤</h2><p>Her kan du se og endre informasjonen din.</p>`;
+        document.querySelector('main').appendChild(prof);
+      }
+      prof.style.display = '';
+      document.getElementById('onboarding').style.display = 'none';
+      document.getElementById('jobs').style.display = 'none';
+      let msg = document.getElementById('messages');
+      if(msg) msg.style.display = 'none';
+    }
+  }
+</script>
+
+</body>
+</html>
